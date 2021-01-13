@@ -4,10 +4,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
 
+import com.home.ms.client.WorkerFeignClient;
 import com.home.ms.entities.Payment;
 import com.home.ms.entities.Worker;
 
@@ -17,10 +16,7 @@ import com.home.ms.entities.Worker;
 public class PaymentService {
 
 	@Autowired
-	private RestTemplate rest;
-
-	@Value("${hr-worker.host}")
-	private String url;
+	private WorkerFeignClient workerFeignClient;
 
 	public Payment getPayment(long workerId, int days) {
 
@@ -30,7 +26,7 @@ public class PaymentService {
 		variaveis.put("id", Long.toString(workerId));
 
 	
-		Worker worker = rest.getForObject(url + "/workers/{id}", Worker.class , variaveis);
+    	Worker worker =  workerFeignClient.findById(workerId).getBody();
 
 		return new Payment(worker.getName(), worker.getDailyIncome(), days);
 	}
