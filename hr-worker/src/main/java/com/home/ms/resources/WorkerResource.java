@@ -3,7 +3,9 @@ package com.home.ms.resources;
 import java.util.List;
 import java.util.Optional;
 
+import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -16,7 +18,12 @@ import com.home.ms.repositories.WorkerRepository;
 @RestController
 @RequestMapping("/workers")
 public class WorkerResource {
-
+ 
+	 private static final Logger logger = org.slf4j.LoggerFactory.getLogger(WorkerResource.class);
+	//infos de contexto
+	@Autowired
+	private Environment env;
+	
 	@Autowired
 	private WorkerRepository repository;
 
@@ -31,6 +38,8 @@ public class WorkerResource {
 	@GetMapping(value = "/{id}")
 	public ResponseEntity<Worker> findById(@PathVariable(name = "id") Long id) {
 
+		logger.info("PORT = " + env.getProperty("local.server.port"));
+		 
 		Optional<Worker> opt = repository.findById(id);
 
 		return ResponseEntity.ok(opt.orElseThrow(() -> new RuntimeException("Não foi encontrado")));
