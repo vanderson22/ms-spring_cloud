@@ -27,7 +27,7 @@ public class User implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	private String email;
-	private String nome;
+	private String name;
 	private String password;
 
 	@ManyToMany(fetch = FetchType.EAGER)
@@ -44,7 +44,7 @@ public class User implements Serializable {
 		super();
 		this.id = id;
 		this.email = email;
-		this.nome = nome;
+		this.name = nome;
 		this.password = password;
 	}
 
@@ -80,14 +80,14 @@ public class User implements Serializable {
 	 * @return the nome
 	 */
 	public String getNome() {
-		return nome;
+		return name;
 	}
 
 	/**
 	 * @param nome the nome to set
 	 */
 	public void setNome(String nome) {
-		this.nome = nome;
+		this.name = nome;
 	}
 
 	/**
