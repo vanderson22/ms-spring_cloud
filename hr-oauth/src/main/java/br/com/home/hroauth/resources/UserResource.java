@@ -1,4 +1,4 @@
-package com.home.ms.oauth.controller;
+package br.com.home.hroauth.resources;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -8,26 +8,24 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.home.ms.oauth.entities.User;
-import com.home.ms.oauth.services.UserService;
+import br.com.home.hroauth.entities.User;
+import br.com.home.hroauth.services.UserService;
 
 @RestController
 @RequestMapping(value = "/users")
 public class UserResource {
 
 	@Autowired
-	private UserService userService;
-
+	private UserService service;
+	
 	@GetMapping(value = "/search")
-	public ResponseEntity<? extends User> findByEmail(@RequestParam String email) {
-		User user = userService.findByEmail(email);
-
+	public ResponseEntity<User> findByEmail(@RequestParam String email) {
 		try {
-
+			User user = service.findByEmail(email);
 			return ResponseEntity.ok(user);
-		} catch (Exception e) {
+		}
+		catch (IllegalArgumentException e) {
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
 		}
 	}
-
 }
